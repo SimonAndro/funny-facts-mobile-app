@@ -6,6 +6,7 @@ import 'package:useless_quotes/screens/home.dart';
 import 'package:useless_quotes/screens/saved.dart';
 import 'package:useless_quotes/screens/settings.dart';
 import 'package:useless_quotes/services/api.dart';
+import 'package:useless_quotes/services/notification.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    NotificationClass().init();
+    super.initState();
   }
 
   @override

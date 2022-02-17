@@ -1,13 +1,17 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:useless_quotes/models/fact.dart';
 
 class FactWidget extends StatelessWidget {
-  const FactWidget({this.onOptionPressed,
-    Key? key, required this.fact, required this.index,
-  }) : super(key: key);
+  const FactWidget(
+      {this.onOptionPressed,
+      Key? key,
+      required this.fact,
+      required this.index,
+      this.isSaveScreen = false})
+      : super(key: key);
 
+  final bool isSaveScreen;
   final Fact fact;
   final int index;
   final Function? onOptionPressed;
@@ -17,22 +21,33 @@ class FactWidget extends StatelessWidget {
     return Card(
       child: Row(
         children: [
-          Expanded(child: Padding(
+          Expanded(
+              child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(fact.text),
           )),
-           PopupMenuButton(
-            itemBuilder:(context){
+          PopupMenuButton(
+            itemBuilder: (context) {
               return [
-                PopupMenuItem(
-                  value: "save",
-                  child: Row(
-                    children: [
-                      Icon(Icons.save),
-                      Text("Save"),
-                    ],
-                  ),
-                ),
+                isSaveScreen
+                    ? PopupMenuItem(
+                        value: "delete",
+                        child: Row(
+                          children: [
+                            Icon(Icons.save),
+                            Text("delete"),
+                          ],
+                        ),
+                      )
+                    : PopupMenuItem(
+                        value: "save",
+                        child: Row(
+                          children: [
+                            Icon(Icons.save),
+                            Text("Save"),
+                          ],
+                        ),
+                      ),
                 PopupMenuItem(
                   value: "share",
                   child: Row(
@@ -44,7 +59,7 @@ class FactWidget extends StatelessWidget {
                 )
               ];
             },
-            onSelected: (String value)=>onOptionPressed!(value,index),
+            onSelected: (String value) => onOptionPressed!(value, index),
           )
         ],
       ),

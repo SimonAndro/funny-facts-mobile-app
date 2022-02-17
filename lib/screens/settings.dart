@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:useless_quotes/services/notification.dart';
 
 class SettingSCreen extends StatefulWidget {
   @override
@@ -8,7 +11,17 @@ class SettingSCreen extends StatefulWidget {
 }
 
 class _SettingSCreenState extends State<SettingSCreen> {
-  bool isNotificationOn = false;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  late Future<bool> isNotificationOn;
+
+  @override
+  void initState() {
+    super.initState();
+    isNotificationOn = _prefs.then((SharedPreferences prefs) {
+      return prefs.getBool('isNotificationOn') ?? false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +42,43 @@ class _SettingSCreenState extends State<SettingSCreen> {
                 )
               ]),
               Expanded(child: SizedBox()),
-              Switch(
-                value: isNotificationOn,
-                onChanged: (value) {
-                  setState(() {
-                    isNotificationOn = value;
-                    print(isNotificationOn);
-                  });
-                },
-                activeTrackColor: Colors.lightGreenAccent,
-                activeColor: Colors.green,
-              ),
+              FutureBuilder<bool>(
+                  future: isNotificationOn,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                    if (snapshot.hasError) {
+                      debugPrint(
+                          'toggle notification snapshot Error: ${snapshot.error}');
+                    }
+                    return Switch(
+                      value: snapshot.data ?? false,
+                      onChanged: (value) {
+                        _toggleNotifications();
+                      },
+                      activeTrackColor: Colors.lightBlueAccent,
+                      activeColor: Colors.blue,
+                    );
+                  })
             ],
           )
         ],
       ),
     );
+  }
+
+  Future<void> _toggleNotifications() async {
+    final SharedPreferences prefs = await _prefs;
+    final bool toggleNotification =
+        (prefs.getBool('isNotificationOn') ?? false) == false;
+
+    setState(() {
+      isNotificationOn = prefs
+          .setBool('isNotificationOn', toggleNotification)
+          .then((bool success) {
+        return toggleNotification;
+
+        // turn on or off notifications
+      });
+    });
   }
 }

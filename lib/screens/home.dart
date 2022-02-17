@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:useless_quotes/models/fact.dart';
 import 'package:useless_quotes/services/api.dart';
+import 'package:useless_quotes/services/database.dart';
 import 'package:useless_quotes/widgets/fact_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,6 +11,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  final DatabaseClass databaseClass = DatabaseClass();
+
   final ApiService api = ApiService();
 
   List<Fact> factList = [];
@@ -89,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (value == 'save') {
 
       Fact toSave = factList.elementAt(index);
-      toSave.insertFact();
+      databaseClass.save(toSave);
 
       // Toast.show("Saved Successfully", context,
       //     duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
