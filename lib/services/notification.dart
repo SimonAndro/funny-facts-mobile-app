@@ -4,7 +4,7 @@ import 'dart:io' show Platform;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:useless_quotes/models/fact.dart';
+import 'package:funny_facts/models/fact.dart';
 
 class NotificationClass {
   static final NotificationClass _notificationService =
@@ -43,34 +43,34 @@ class NotificationClass {
   Future selectNotification(String? payload) async {
     Fact fact = getFactFromPayload(payload ?? '');
     cancelNotification(fact);
-    scheduleNotificationNextDay(fact, notificationTitle);
+    scheduleNotificationNextDay(fact);
   }
 
   void showNotification(Fact fact, String notificationMessage) async {
     await flutterLocalNotificationsPlugin.show(
         fact.hashCode,
         applicationName,
-        notificationMessage,
+        fact.text,
         const NotificationDetails(
             android: AndroidNotificationDetails(channel_id, applicationName,
                 channelDescription: channelDescription)),
-        payload: jsonEncode(fact));
+        payload: fact.toJson());
+
+    scheduleNotificationNextDay(fact);
   }
 
   void scheduleNotificationNextDay(
-      Fact fact, String notificationMessage) async {
-    await flutterLocalNotificationsPlugin.zonedSchedule(
+      Fact fact) async {
+    await flutterLocalNotificationsPlugin.periodicallyShow(
         fact.hashCode,
         applicationName,
-        notificationMessage,
-        tz.TZDateTime.now(tz.local).add(new Duration(days: 365)),
+        fact.text,
+        RepeatInterval.everyMinute,
         const NotificationDetails(
             android: AndroidNotificationDetails(channel_id, applicationName,
                 channelDescription: channelDescription)),
         payload: jsonEncode(fact),
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime);
+        androidAllowWhileIdle: true);
   }
 
   void cancelNotification(Fact fact) async {

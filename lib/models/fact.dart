@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 class Fact{
   final String tableName = "facts";
   final int id;
@@ -18,6 +20,8 @@ class Fact{
       '_identifier':identifier
     };
   }
+
+  String toJson() => json.encode(toMap());
 
   @override
   String toString() {

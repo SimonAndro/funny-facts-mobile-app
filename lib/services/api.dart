@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 
-import 'package:useless_quotes/models/fact.dart';
+import 'package:funny_facts/models/fact.dart';
 
 class ApiService {
   final apiUrl =

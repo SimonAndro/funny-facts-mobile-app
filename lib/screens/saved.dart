@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:useless_quotes/models/fact.dart';
-import 'package:useless_quotes/services/database.dart';
-import 'package:useless_quotes/widgets/fact_widget.dart';
+import 'package:funny_facts/models/fact.dart';
+import 'package:funny_facts/services/database.dart';
+import 'package:funny_facts/widgets/fact_widget.dart';
 
 class SavedScreen extends StatefulWidget {
   @override
@@ -32,12 +32,16 @@ class _SavedScreenState extends State<SavedScreen> {
     }
 
     if (_noSavedRecord) {
-
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text("No saved facts"),
-          TextButton(child: Text("Refresh"), onPressed: initialLoadData)
+          TextButton(
+              child: Text("Refresh"),
+              onPressed: () {
+                _noSavedRecord = false;
+                initialLoadData();
+              })
         ],
       );
     }
@@ -81,7 +85,7 @@ class _SavedScreenState extends State<SavedScreen> {
               height: 1.0,
             )),
             Padding(
-              padding: const EdgeInsets.fromLTRB(2.0,0,0,2.0),
+              padding: const EdgeInsets.fromLTRB(2.0, 0, 0, 2.0),
               child: Text("End"),
             ),
             Expanded(
@@ -127,8 +131,7 @@ class _SavedScreenState extends State<SavedScreen> {
       databaseClass.delete(toDelete);
 
       factList.removeAt(index);
-      if(this.factList.length==0)
-      {
+      if (this.factList.length == 0) {
         _noSavedRecord = true;
       }
 
@@ -157,9 +160,14 @@ class _SavedScreenState extends State<SavedScreen> {
       });
 
       this.factList.addAll(factsFromDb);
+
+      setState(() {});
+
+      debugPrint("list length ${this.factList.length}");
     }
 
-    if ((offset == -1 && maps.length == 0) || this.factList.length==0 ) // no saved records
+    if ((offset == -1 && maps.length == 0) ||
+        this.factList.length == 0) // no saved records
     {
       _noSavedRecord = true;
     } else if (maps.length < limit || maps.length == 0) // no more records

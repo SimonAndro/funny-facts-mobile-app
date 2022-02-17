@@ -2,11 +2,11 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:useless_quotes/screens/home.dart';
-import 'package:useless_quotes/screens/saved.dart';
-import 'package:useless_quotes/screens/settings.dart';
-import 'package:useless_quotes/services/api.dart';
-import 'package:useless_quotes/services/notification.dart';
+import 'package:funny_facts/screens/home.dart';
+import 'package:funny_facts/screens/saved.dart';
+import 'package:funny_facts/screens/settings.dart';
+import 'package:funny_facts/services/api.dart';
+import 'package:funny_facts/services/notification.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,11 +69,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
-          child: IndexedStack(
-            alignment: AlignmentDirectional.center,
-            index: _selectedIndex,
-            children: _widgetOptions,
-          )
+            child: IndexedStack(
+              alignment: AlignmentDirectional.center,
+              index: _selectedIndex,
+              children: _widgetOptions,
+            )
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

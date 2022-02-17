@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:useless_quotes/models/fact.dart';
+import 'package:funny_facts/models/fact.dart';
 
 class FactWidget extends StatelessWidget {
   const FactWidget(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:useless_quotes/services/notification.dart';
+import 'package:funny_facts/services/notification.dart';
 
 class SettingSCreen extends StatefulWidget {
   @override
@@ -75,9 +75,10 @@ class _SettingSCreenState extends State<SettingSCreen> {
       isNotificationOn = prefs
           .setBool('isNotificationOn', toggleNotification)
           .then((bool success) {
-        return toggleNotification;
 
-        // turn on or off notifications
+        //!todo turn on or off notifications
+
+        return toggleNotification;
       });
     });
   }

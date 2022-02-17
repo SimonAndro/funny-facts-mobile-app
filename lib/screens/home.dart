@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:useless_quotes/models/fact.dart';
-import 'package:useless_quotes/services/api.dart';
-import 'package:useless_quotes/services/database.dart';
-import 'package:useless_quotes/widgets/fact_widget.dart';
+import 'package:funny_facts/models/fact.dart';
+import 'package:funny_facts/services/api.dart';
+import 'package:funny_facts/services/database.dart';
+import 'package:funny_facts/widgets/fact_widget.dart';
+
+import '../services/notification.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -99,7 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
       //     duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
 
     } else if (value == 'share') {
-
+      //test show notification
+      Fact fact = factList.elementAt(index);
+      NotificationClass().showNotification(fact,"test notification");
     }
   }
 
