@@ -11,7 +11,7 @@
 
     <item>
         <bitmap
-            android:gravity="bottom|fill_horizontal"
+            android:gravity="bottom|clip_horizontal"
             android:src="@drawable/aakada" />
     </item>
 </layer-list>

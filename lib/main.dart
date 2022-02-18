@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  HttpOverrides.global = new MyHttpOverrides();
+  HttpOverrides.global = MyHttpOverrides();
   runApp(MyApp());
 }
 
@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    SavedScreen(),
+    const SavedScreen(),
     const SettingScreen(),
   ];
 

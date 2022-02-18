@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Loading failed, try again later"),
+          const Text("Loading failed, check internet connection or try again later"),
           TextButton(child: Text("Try again"), onPressed: initialLoadData)
         ],
       );
@@ -130,25 +130,21 @@ class _HomeScreenState extends State<HomeScreen> {
         Fact fact = await api.getFact();
 
         setState(() {
-          this.factList.add(fact);
+          factList.add(fact);
         });
 
         if (i == 9) {
           onFinish!();
         }
       } catch (e) {
+        debugPrint(e.toString());
         //couldn't fetch from api
         onFinish!();
-
-        // Toast.show("Server Busy, try again later", context,
-        //     duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       }
     }
   }
 
-  /**
-   * Initial fetch for the API data
-   */
+  /// Initial fetch for the API data
   Future initialLoadData() async {
     setState(() {
       _initialLoading = true;

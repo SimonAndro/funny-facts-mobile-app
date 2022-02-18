@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aakadasoftwares.funny_facts.funny_facts">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
    <application
         android:label="Funny Facts"
         android:name="${applicationName}"
