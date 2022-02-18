@@ -4,6 +4,8 @@ import 'package:funny_facts/models/fact.dart';
 import 'package:funny_facts/services/api.dart';
 import 'package:funny_facts/services/database.dart';
 import 'package:funny_facts/widgets/fact_widget.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../services/notification.dart';
 
@@ -91,25 +93,36 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void actionPopUpItemSelected(String value, int index) {
+  Future<void> actionPopUpItemSelected(String value, int index) async {
+
+    Fact fact = factList.elementAt(index);
+
     if (value == 'save') {
 
-      Fact toSave = factList.elementAt(index);
-      databaseClass.save(toSave);
+      databaseClass.save(fact);
 
-      // Toast.show("Saved Successfully", context,
-      //     duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+      Fluttertoast.showToast(
+          msg: "Saved Successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black45,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
 
     } else if (value == 'share') {
-      //test show notification
-      Fact fact = factList.elementAt(index);
-      NotificationClass().showNotification(fact,"test notification");
+
+      final box = context.findRenderObject() as RenderBox?;
+      await Share.share(fact.text + "\n ---------------\n via Funny Facts App",
+          subject: "Funny Fact from the Funny Fact App",
+          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+
+
     }
   }
 
-  /**
-   * Loading fact using API
-   */
+  /// Loading fact using API
   Future<void> loadFact({VoidCallback? onFinish}) async {
     // 10 initial facts
     for (var i = 0; i < 10; i++) {

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:funny_facts/models/fact.dart';
 import 'package:funny_facts/services/database.dart';
 import 'package:funny_facts/widgets/fact_widget.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SavedScreen extends StatefulWidget {
+  const SavedScreen({Key? key}) : super(key: key);
+
   @override
   _SavedScreenState createState() => _SavedScreenState();
 }
@@ -125,10 +129,11 @@ class _SavedScreenState extends State<SavedScreen> {
     }
   }
 
-  void actionPopUpItemSelected(String value, int index) {
+  Future<void> actionPopUpItemSelected(String value, int index) async {
+    Fact fact = factList.elementAt(index);
+
     if (value == 'delete') {
-      Fact toDelete = factList.elementAt(index);
-      databaseClass.delete(toDelete);
+      databaseClass.delete(fact);
 
       factList.removeAt(index);
       if (this.factList.length == 0) {
@@ -138,10 +143,22 @@ class _SavedScreenState extends State<SavedScreen> {
       //update UI
       setState(() {});
 
-      // Toast.show("Saved Successfully", context,
-      //     duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+      Fluttertoast.showToast(
+          msg: "Deleted",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black45,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
 
-    } else if (value == 'share') {}
+    } else if (value == 'share') {
+      final box = context.findRenderObject() as RenderBox?;
+      await Share.share(fact.text + "\n ---------------\n via Funny Facts App",
+          subject: "Funny Fact from the Funny Fact App",
+          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+    }
   }
 
   /// Loading fact from database

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io' show Platform;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -27,7 +28,16 @@ class NotificationClass {
 
   static const channel_id = "123";
 
-  Future<void> init() async {
+  static const comeBackPayLoad = "comeBack";
+
+  static const nextNotificationDate = "nextNotificationDate";
+
+  late Function? onSelect;
+
+  Future<void> init({Function? onSelect}) async {
+
+    this.onSelect = onSelect;
+
     final AndroidInitializationSettings androidInit =
         AndroidInitializationSettings('app_icon');
 
@@ -41,9 +51,17 @@ class NotificationClass {
   }
 
   Future selectNotification(String? payload) async {
-    Fact fact = getFactFromPayload(payload ?? '');
-    cancelNotification(fact);
-    scheduleNotificationNextDay(fact);
+
+    debugPrint("selected notification payload $payload");
+
+    if(payload != comeBackPayLoad)
+    {
+       Fact fact = getFactFromPayload(payload ?? '');
+       cancelNotification(fact.hashCode);
+
+       onSelect!(fact);
+    }
+
   }
 
   void showNotification(Fact fact, String notificationMessage) async {
@@ -55,26 +73,39 @@ class NotificationClass {
             android: AndroidNotificationDetails(channel_id, applicationName,
                 channelDescription: channelDescription)),
         payload: fact.toJson());
-
-    scheduleNotificationNextDay(fact);
   }
 
-  void scheduleNotificationNextDay(
-      Fact fact) async {
-    await flutterLocalNotificationsPlugin.periodicallyShow(
+  void scheduleNextNotification(
+      Fact fact, Duration duration) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
         fact.hashCode,
         applicationName,
         fact.text,
-        RepeatInterval.everyMinute,
+        tz.TZDateTime.now(tz.local).add(duration),
         const NotificationDetails(
             android: AndroidNotificationDetails(channel_id, applicationName,
                 channelDescription: channelDescription)),
-        payload: jsonEncode(fact),
+        payload: fact.toJson(),
+        androidAllowWhileIdle: true, uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime);
+  }
+
+  void scheduleRepeatNotification(
+      String message, String payload, RepeatInterval interval) async {
+
+    await flutterLocalNotificationsPlugin.periodicallyShow(
+        message.hashCode,
+        applicationName,
+        message,
+        interval,
+        const NotificationDetails(
+            android: AndroidNotificationDetails(channel_id, applicationName,
+                channelDescription: channelDescription)),
+        payload: payload,
         androidAllowWhileIdle: true);
   }
 
-  void cancelNotification(Fact fact) async {
-    await flutterLocalNotificationsPlugin.cancel(fact.hashCode);
+  void cancelNotification(int hashCode) async {
+    await flutterLocalNotificationsPlugin.cancel(hashCode);
   }
 
   void cancelAllNotifications() async {
@@ -82,12 +113,19 @@ class NotificationClass {
   }
 
   Fact getFactFromPayload(String payload) {
+
     Map<String, dynamic> json = jsonDecode(payload);
-    Fact fact = Fact.fromJson(json);
+
+    Fact fact = Fact(
+      identifier: json['_identifier'],
+      text: json['_text'],
+      id: -1,
+    );
+
     return fact;
   }
 
-  Future<bool> _wasApplicationLaunchedFromNotification() async {
+  Future<bool> isLaunchFromNotification() async {
     NotificationAppLaunchDetails? notificationAppLaunchDetails =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 

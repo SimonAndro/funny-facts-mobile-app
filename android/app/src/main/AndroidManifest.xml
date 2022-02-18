@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aakadasoftwares.funny_facts.funny_facts">
    <application
-        android:label="funny_facts"
+        android:label="Funny Facts"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

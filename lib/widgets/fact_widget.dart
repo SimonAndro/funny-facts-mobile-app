@@ -34,7 +34,7 @@ class FactWidget extends StatelessWidget {
                         value: "delete",
                         child: Row(
                           children: [
-                            Icon(Icons.save),
+                            Icon(Icons.delete,color: Colors.red.shade200,),
                             Text("delete"),
                           ],
                         ),
@@ -43,7 +43,7 @@ class FactWidget extends StatelessWidget {
                         value: "save",
                         child: Row(
                           children: [
-                            Icon(Icons.save),
+                            Icon(Icons.save,color: Colors.blue),
                             Text("Save"),
                           ],
                         ),
@@ -52,7 +52,7 @@ class FactWidget extends StatelessWidget {
                   value: "share",
                   child: Row(
                     children: [
-                      Icon(Icons.share),
+                      Icon(Icons.share,color: Colors.green),
                       Text("Share"),
                     ],
                   ),
