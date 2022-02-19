@@ -1,0 +1,1 @@
+The app allows you to browse funny facts. you can save and share the funny facts via sms or whatsapp or email or other sharing methods.

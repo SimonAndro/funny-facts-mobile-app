@@ -40,8 +40,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.aakadasoftwares.funny_facts.funny_facts"
+        applicationId "com.aakadasoftwares.funny_facts"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -67,3 +66,5 @@ android {
 flutter {
     source '../..'
 }
+
+android.defaultConfig.ndk.debugSymbolLevel = 'FULL'
