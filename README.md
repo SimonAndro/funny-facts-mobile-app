@@ -4,5 +4,5 @@ An app that consumes a funny facts api and allows the user to view, save and sha
 
 download on google play store 
 <a  style="width:100px; height:100px;" href="https://play.google.com/store/apps/details?id=com.aakadasoftwares.funny_facts">
-<img  style="width:100%; height:auto;" src="https://raw.githubusercontent.com/SimonAndro/funny-facts-mobile-app/main/others/google-play-badge.png" />
+<img  style="width:100px; height:auto;" src="https://raw.githubusercontent.com/SimonAndro/funny-facts-mobile-app/main/others/google-play-badge.png" />
  </a>
